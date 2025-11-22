@@ -58,7 +58,7 @@
 
         .signature-reveal {
             font-family: 'Great Vibes', cursive;
-            font-size: 5.5rem;
+            font-size: 5.5rem; /* Tamanho Grande no PC */
             color: transparent;
             background-image: linear-gradient(to right, #fff 0%, #fff 50%, transparent 50%, transparent 100%);
             background-size: 200% 100%;
@@ -68,6 +68,7 @@
             animation: flowInk 3.5s ease-out forwards;
             padding: 15px 30px;
             line-height: 1.4;
+            text-align: center;
         }
 
         .intro-subtitle {
@@ -84,22 +85,18 @@
         /* =========================================
            3. ANIMAÇÕES DE ENTRADA DOS ELEMENTOS
            ========================================= */
-        
-        /* Define como os elementos começam (invisíveis) */
         .hidden-element {
             opacity: 0;
-            transform: translateY(50px); /* Começa 50px para baixo */
+            transform: translateY(50px); 
         }
 
-        /* A animação que o JS vai adicionar */
         @keyframes fadeInUp {
             to {
                 opacity: 1;
-                transform: translateY(0); /* Sobe para posição original */
+                transform: translateY(0); 
             }
         }
 
-        /* Classe auxiliar para ativar a animação */
         .animate-active {
             animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
@@ -110,7 +107,7 @@
            ========================================= */
         .container {
             max-width: 1000px; margin: 0 auto; padding: 60px 20px;
-            display: none; /* Começa oculto, o JS ativa */
+            display: none; 
         }
 
         header { 
@@ -140,13 +137,15 @@
 
         /* Texto Header */
         .main-title-signature {
-            font-family: 'Great Vibes', cursive; font-size: 5rem; margin-bottom: 5px;
+            font-family: 'Great Vibes', cursive; 
+            font-size: 5rem; /* Tamanho padrão PC */
+            margin-bottom: 5px;
             color: transparent;
             background-image: linear-gradient(to right, #fff 0%, #fff 50%, transparent 50%, transparent 100%);
             background-size: 200% 100%; background-position: 100% 0;
             -webkit-background-clip: text; background-clip: text;
             animation: flowInk 3s ease-out forwards; 
-            padding: 0 20px; line-height: 1.2;
+            padding: 0 10px; line-height: 1.2;
         }
 
         header .subtitle { 
@@ -279,10 +278,24 @@
         @keyframes flowInk { to { background-position: 0% 0; } }
         @keyframes fadeIn { to { opacity: 1; } }
 
+        /* =========================================
+           8. AJUSTES PARA CELULAR (RESPONSIVO)
+           ========================================= */
         @media(max-width: 600px) {
-            .container { padding: 40px 20px; }
-            .signature-reveal { font-size: 3rem; padding: 10px 20px; }
-            .main-title-signature { font-size: 3.5rem; padding: 0; }
+            /* Dá mais espaço lateral diminuindo o padding */
+            .container { padding: 40px 15px; }
+            
+            /* Texto da Intro menor */
+            .signature-reveal { font-size: 2.8rem; padding: 10px 10px; }
+            
+            /* --- CORREÇÃO DA QUEBRA DO NOME --- */
+            /* Reduzido de 3.5rem para 2.4rem para caber na tela do celular */
+            .main-title-signature { 
+                font-size: 2.4rem; 
+                padding: 0; 
+            }
+            
+            /* Foto um pouco menor */
             .profile-img { width: 140px; height: 140px; }
         }
     </style>
@@ -398,12 +411,9 @@
 
 
     <script>
-        // --- 1. Lógica da Tela de Abertura com Animação em Cascata ---
         function enterSite() {
             const intro = document.getElementById('intro');
             const content = document.getElementById('main-content');
-            
-            // Seleciona todos os elementos que devem animar (tem a classe hidden-element)
             const elementsToAnimate = document.querySelectorAll('.hidden-element');
 
             intro.style.opacity = '0';
@@ -413,27 +423,25 @@
                 intro.style.display = 'none';
                 content.style.display = 'block';
                 
-                // Aqui acontece a mágica da cascata
+                // Animação em Cascata
                 elementsToAnimate.forEach((element, index) => {
                     setTimeout(() => {
                         element.classList.add('animate-active');
-                    }, index * 200); // Atraso de 200ms entre cada elemento (0ms, 200ms, 400ms...)
+                    }, index * 200);
                 });
 
             }, 800);
         }
 
-        // Auto-entrar após 6 segundos
         setTimeout(() => {
             const intro = document.getElementById('intro');
             if(intro.style.opacity !== '0') { enterSite(); }
         }, 6000);
 
-        // --- 2. Lógica do Modal da Foto ---
+        // Modal Functions
         function openProfileModal() {
             const modal = document.getElementById('profile-modal-overlay');
             document.getElementById('modal-img').src = document.getElementById('main-profile-img').src;
-            
             modal.style.display = "flex";
             setTimeout(() => {
                 modal.style.opacity = "1";
